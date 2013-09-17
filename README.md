@@ -60,6 +60,26 @@ Or, for those using Spring configuration files:
 </bean>
 ```
 
+Use it
+```html
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:with="http://www.thymeleaf.org/extras/with">
+<head></head>
+<body>
+	<div
+		with:isActive="${true}"
+		with:isNotActive="${false}"
+		with:someCalc="${2 + 4}">
+		<span th:text="${isActive}">true</span>
+		<span th:text="${isNotActive}">false</span>
+		<span th:text="${someCalc">6</span>
+	</div>
+</body>
+</html>
+```
+
+
 Changelog
 ---------
 
