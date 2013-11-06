@@ -85,4 +85,7 @@ Changelog
 
 ### 0.0.1-SNAPSHOT
  - Initial commit.
+ 
+### 1.0.0
+ - Considered stable
 
