@@ -3,8 +3,6 @@ package org.mfrey.thymeleaf.extras.with;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Attribute;
 import org.thymeleaf.dom.Element;

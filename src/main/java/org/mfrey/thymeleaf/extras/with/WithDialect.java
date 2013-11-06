@@ -7,9 +7,9 @@ import org.thymeleaf.dialect.AbstractDialect;
 import org.thymeleaf.processor.IProcessor;
 
 public class WithDialect extends AbstractDialect {
-	public static final String LAYOUT_NAMESPACE = "http://www.thymeleaf.org/extras/with";
+	public static final String DIALECT_NAMESPACE = "http://www.thymeleaf.org/extras/with";
 
-	static final String LAYOUT_PREFIX = "with";
+	static final String DIALECT_PREFIX = "with";
 
 	/**
 	 * {@inheritDoc}
@@ -23,7 +23,7 @@ public class WithDialect extends AbstractDialect {
 	}
 
 	public String getPrefix() {
-		return "with";
+		return DIALECT_PREFIX;
 	}
 
 	public boolean isLenient() {
