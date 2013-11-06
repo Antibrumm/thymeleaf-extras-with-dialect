@@ -4,8 +4,8 @@ Thymeleaf With Dialect
 
 A dialect for Thymeleaf that allows you to use attributes with a "with" prefix to avoid having long "th:with"-expressions.
 
- - Current version: 0.0.1-SNAPSHOT
- - Released: 17 September 2013
+ - Current version: 1.0.0
+ - Released: 06 November 2013
 
 
 Requirements
