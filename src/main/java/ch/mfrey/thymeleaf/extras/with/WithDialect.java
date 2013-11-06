@@ -1,4 +1,4 @@
-package org.mfrey.thymeleaf.extras.with;
+package ch.mfrey.thymeleaf.extras.with;
 
 import java.util.HashSet;
 import java.util.Set;
