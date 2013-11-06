@@ -21,7 +21,7 @@ Installation
 ### For Maven and Maven-compatible dependency managers
 Add a dependency to your project with the following co-ordinates:
 
- - GroupId: `org.mfrey.thymeleaf.extras.with`
+ - GroupId: `ch.mfrey.thymeleaf.extras.with`
  - ArtifactId: `thymeleaf-with-dialect`
  - Version: `1.0.0`
 
@@ -53,7 +53,7 @@ Or, for those using Spring configuration files:
   <!-- These lines add the dialect to Thymeleaf -->
   <property name="additionalDialects">
     <set>
-      <beans:bean class="org.mfrey.thymeleaf.extras.with.WithDialect" />
+      <beans:bean class="ch.mfrey.thymeleaf.extras.with.WithDialect" />
     </set>
   </property>
 
@@ -88,4 +88,5 @@ Changelog
  
 ### 1.0.0
  - Considered stable
+ - Changed groupid
 
