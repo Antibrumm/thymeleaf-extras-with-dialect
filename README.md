@@ -12,7 +12,7 @@ Requirements
 ------------
 
  - Java 5
- - Thymeleaf 2.0.18+ (2.0.18 and its dependencies included)
+ - Thymeleaf 2.1.0+ (2.1.0.RELEASE and its dependencies included)
 
 
 Installation
@@ -23,7 +23,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `ch.mfrey.thymeleaf.extras.with`
  - ArtifactId: `thymeleaf-with-dialect`
- - Version: `1.0.0`
+ - Version: `2.0.0`
 
 
 Usage
@@ -67,13 +67,19 @@ Use it
 	xmlns:with="http://www.thymeleaf.org/extras/with">
 <head></head>
 <body>
-	<div
-		with:isActive="${true}"
-		with:isNotActive="${false}"
-		with:someCalc="${2 + 4}">
-		<span th:text="${isActive}">true</span>
-		<span th:text="${isNotActive}">false</span>
-		<span th:text="${someCalc">6</span>
+	<div with:isActive="${true}"
+	 	 with:hello="'Hello'"
+	 	 with:helloWorld="${hello} + ' World'"
+	 	 with:helloUnderWorld="${hello + ' Under World'}"
+	 	 with:someCalc="${2 + 4}"
+	 	 with:moreCalc="${someCalc + 10}">
+		<div th:text="${isActive}">true</div>
+		<div th:text="${hello}">Hello</div>
+		<div th:text="${helloWorld}">Hello World</div>
+		<div th:text="${helloUnderWorld}">Hello Under World</div>
+		<div th:text="${someCalc}">6</div>
+		<div th:text="${moreCalc}">16</div>
+		<div with:evenMoreCalc="${moreCalc + 5}" th:text="${evenMoreCalc}">21</div>
 	</div>
 </body>
 </html>
@@ -90,3 +96,5 @@ Changelog
  - Considered stable
  - Changed groupid
 
+### 2.0.0
+ - Working against Thymeleaf 2.1.0+
