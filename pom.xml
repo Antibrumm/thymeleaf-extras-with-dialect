@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>ch.mfrey.thymeleaf.extras.with</groupId>
 	<artifactId>thymeleaf-with-dialect</artifactId>
-	<version>2.0.0-SNAPSHOT</version>
+	<version>2.0.0</version>
 	<name>Thymeleaf With Dialect</name>
 	<description>A dialect for Thymeleaf that allows you to use attributes with a "with" prefix to avoid having long "th:with"-expressions.
 
