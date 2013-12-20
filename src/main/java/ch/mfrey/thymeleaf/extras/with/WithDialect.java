@@ -7,7 +7,7 @@ import org.thymeleaf.dialect.AbstractDialect;
 import org.thymeleaf.processor.IProcessor;
 
 public class WithDialect extends AbstractDialect {
-	public static final String LAYOUT_NAMESPACE = "http://www.thymeleaf.org/extras/with";
+	public static final String DIALECT_NAMESPACE = "http://www.thymeleaf.org/extras/with";
 
 	static final String DIALECT_PREFIX = "with";
 
