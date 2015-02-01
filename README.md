@@ -4,9 +4,7 @@ Thymeleaf With Dialect
 
 A dialect for Thymeleaf that allows you to use attributes with a "with" prefix to avoid having long "th:with"-expressions.
 
- - Current version: 2.0.0
- - Released: 07 November 2013
-
+[![Build Status](https://travis-ci.org/Antibrumm/thymeleaf-extras-with-dialect.png)](https://travis-ci.org/Antibrumm/thymeleaf-extras-with-dialect)
 
 Requirements
 ------------
@@ -23,7 +21,7 @@ Add a dependency to your project with the following co-ordinates:
 
  - GroupId: `ch.mfrey.thymeleaf.extras.with`
  - ArtifactId: `thymeleaf-with-dialect`
- - Version: `2.0.0`
+ - Version: `${thymeleaf-with-dialect.version}`
 
 
 Usage
