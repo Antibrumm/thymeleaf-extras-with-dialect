@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:with="http://www.thymeleaf.org/extras/with">
+<head></head>
+<body>
+	<div data-with-dataWorks="Works"
+		 with:isActive="${true}"
+	 	 with:hello="'Hello'"
+	 	 with:helloWorld="${hello} + ' World'"
+	 	 with:helloUnderWorld="${hello + ' Under World'}"
+	 	 with:someCalc="${2 + 4}"
+	 	 with:moreCalc="${someCalc + 10}">
+		<div th:text="${isActive}"></div>
+		<div th:text="${hello}"></div>
+		<div th:text="${helloWorld}"></div>
+		<div th:text="${helloUnderWorld}"></div>
+		<div th:text="${someCalc}">-1</div>
+		<div th:text="${moreCalc}">-1</div>
+		<div with:evenMoreCalc="${moreCalc + 5}" th:text="${evenMoreCalc}">-1</div>
+		<div>Data <span th:text="${dataWorks}" th:remove="tag"></span></div>
+	</div>
+</body>
+</html>
