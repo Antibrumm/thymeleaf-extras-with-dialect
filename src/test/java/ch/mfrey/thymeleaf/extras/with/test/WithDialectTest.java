@@ -26,10 +26,9 @@ public class WithDialectTest {
 
     @Test
     public void testWith() {
+        String expected = templateEngine.process("templates/expected.html", new ExpressionContext(templateEngine.getConfiguration()));
+
         String result = templateEngine.process("templates/withTest.html", new ExpressionContext(templateEngine.getConfiguration()));
-        Assert.assertTrue(!result.contains("with:"));
-        Assert.assertTrue(result.contains("Hello Under World"));
-        Assert.assertTrue(result.contains("21"));
-        Assert.assertTrue(result.contains("Data Works"));
+        Assert.assertEquals(expected, result);
     }
 }
