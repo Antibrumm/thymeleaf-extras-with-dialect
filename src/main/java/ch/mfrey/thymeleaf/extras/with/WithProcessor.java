@@ -3,6 +3,8 @@ package ch.mfrey.thymeleaf.extras.with;
 import java.util.List;
 
 import org.attoparser.util.TextUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.thymeleaf.context.IEngineContext;
 import org.thymeleaf.context.ITemplateContext;
 import org.thymeleaf.dialect.IProcessorDialect;
@@ -23,6 +25,8 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.util.EscapedAttributeUtils;
 
 public class WithProcessor extends AbstractProcessor implements IElementTagProcessor {
+
+    private static final Logger log = LoggerFactory.getLogger(WithProcessor.class);
 
     public static final int PRECEDENCE = StandardWithTagProcessor.PRECEDENCE;
 
@@ -50,7 +54,7 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
 
         final TemplateMode templateMode = context.getTemplateMode();
         final IElementAttributes attributes = tag.getAttributes();
-        // Currently we need to work on the complete attribute name (with prefix) as we loose case sensitivity.
+        final List<AttributeName> attributeNames = attributes.getAllAttributeNames();
         final List<String> completeNames = attributes.getAllCompleteNames();
 
         // Normally we would just allow the structure handler to be in charge of declaring the local variables
@@ -58,15 +62,26 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
         // expression to be available for the next expressions, and that forces us to cast our ITemplateContext into
         // a more specific interface --which shouldn't be used directly except in this specific, special case-- and
         // put the local variables directly into it.
-        IEngineContext engineContext = null;
+        final IEngineContext engineContext;
         if (context instanceof IEngineContext) {
             // NOTE this interface is internal and should not be used in users' code
             engineContext = (IEngineContext) context;
+        } else {
+            engineContext = null;
         }
-        for (final String completeName : completeNames) {
-            AttributeName attributeName = attributes.getAttributeDefinition(completeName).getAttributeName();
+
+        for (int i = 0; i < attributeNames.size(); i++) {
+            // this matching works are these lists are correlated
+            final AttributeName attributeName = attributeNames.get(i);
+            final String completeName = completeNames.get(i);
+            /*
+             * Compute the new attribute name (case sensitive). As the length of the matched attributename (in
+             * lowercase) is the same as the variablename without the prefix we can just do a substring.
+             */
+            final String newVariableName = completeName.substring(completeName.length() - attributeName.getAttributeName().length());
+
             if (attributeName.isPrefixed() && TextUtil.equals(templateMode.isCaseSensitive(), attributeName.getPrefix(), this.dialectPrefix)) {
-                processWithAttribute(context, engineContext, tag, completeName, attributeName, structureHandler);
+                processWithAttribute(context, engineContext, tag, attributeName, newVariableName, structureHandler);
             }
 
         }
@@ -75,23 +90,11 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
 
     private void processWithAttribute(
             final ITemplateContext context, final IEngineContext engineContext,
-            final IProcessableElementTag tag, final String completeName, final AttributeName attributeName, IElementTagStructureHandler structureHandler) {
+            final IProcessableElementTag tag, final AttributeName attributeName, final String newVariableName, IElementTagStructureHandler structureHandler) {
         try {
 
             final String attributeValue = EscapedAttributeUtils.unescapeAttribute(
                     context.getTemplateMode(), tag.getAttributes().getValue(attributeName));
-
-            /*
-             * Compute the new attribute name (case sensitive)
-             */
-            final String newVariableName;
-            if (completeName.contains(":")) {
-                // prefix version: 'with:varName'
-                newVariableName = completeName.substring(this.dialectPrefix.length() + 1);
-            } else {
-                // data version 'data-with-varName'
-                newVariableName = completeName.substring(this.dialectPrefix.length() + 6);
-            }
 
             /*
              * Obtain the parser
@@ -109,6 +112,8 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
                 expressionResult = null;
             }
 
+            log.debug("Setting Variable: {}={}", newVariableName, expressionResult);
+         
             if (engineContext != null) {
                 // The advantage of this vs. using the structure handler is that we will be able to
                 // use this newly created value in other expressions in the same 'th:with'
@@ -127,13 +132,13 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
                 e.setTemplateName(tag.getTemplateName());
             }
             if (!e.hasLineAndCol()) {
-                e.setLineAndCol(tag.getAttributes().getLine(completeName), tag.getAttributes().getCol(completeName));
+                e.setLineAndCol(tag.getAttributes().getLine(attributeName), tag.getAttributes().getCol(attributeName));
             }
             throw e;
         } catch (final Exception e) {
             throw new TemplateProcessingException(
                     "Error during execution of processor '" + WithProcessor.class.getName() + "'",
-                    tag.getTemplateName(), tag.getAttributes().getLine(completeName), tag.getAttributes().getCol(completeName), e);
+                    tag.getTemplateName(), tag.getAttributes().getLine(attributeName), tag.getAttributes().getCol(attributeName), e);
         }
     }
 
