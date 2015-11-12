@@ -17,9 +17,9 @@ public class WithDialect extends AbstractProcessorDialect {
 
     static final String DIALECT_PREFIX = "with";
 
-    public Set<IProcessor> getProcessors(String arg0) {
+    public Set<IProcessor> getProcessors(String dialectPrefix) {
         HashSet<IProcessor> processors = new HashSet<IProcessor>();
-        processors.add(new WithProcessor(this, TemplateMode.HTML, getPrefix()));
+        processors.add(new WithProcessor(this, TemplateMode.HTML, dialectPrefix));
         return processors;
     }
 

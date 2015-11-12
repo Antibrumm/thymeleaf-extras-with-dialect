@@ -10,7 +10,7 @@ Requirements
 ------------
 
  - Java 5
- - Thymeleaf 2.1.0+ (2.1.0.RELEASE and its dependencies included)
+ - Thymeleaf 3.0.0+ (3.0.0.BETA01 and its dependencies included)
 
 
 Installation
@@ -96,3 +96,6 @@ Changelog
 
 ### 2.0.0
  - Working against Thymeleaf 2.1.0+
+
+### 3.0.0-SNAPSHOT
+ - Working againt Thymeleaf 3.0.0.BETA01
