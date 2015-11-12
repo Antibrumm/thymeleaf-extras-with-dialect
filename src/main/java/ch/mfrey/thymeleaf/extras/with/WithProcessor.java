@@ -24,7 +24,6 @@ import org.thymeleaf.util.EscapedAttributeUtils;
 
 public class WithProcessor extends AbstractProcessor implements IElementTagProcessor {
 
-    // Setting to Integer.MAX_VALUE is alright - we will always be limited by the dialect precedence anyway
     public static final int PRECEDENCE = StandardWithTagProcessor.PRECEDENCE;
 
     private final String dialectPrefix;
@@ -36,12 +35,12 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
         this.matchingAttributeName = MatchingAttributeName.forAllAttributesWithPrefix(getTemplateMode(), dialectPrefix);
     }
 
-    public final MatchingElementName getMatchingElementName() {
-        return null;
-    }
-
     public final MatchingAttributeName getMatchingAttributeName() {
         return this.matchingAttributeName;
+    }
+
+    public final MatchingElementName getMatchingElementName() {
+        return null;
     }
 
     public void process(
