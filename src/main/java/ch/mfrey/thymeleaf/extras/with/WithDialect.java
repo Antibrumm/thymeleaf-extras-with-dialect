@@ -20,8 +20,8 @@ public class WithDialect extends AbstractProcessorDialect {
 
     public Set<IProcessor> getProcessors(String dialectPrefix) {
         HashSet<IProcessor> processors = new HashSet<IProcessor>();
-        processors.add(new StandardXmlNsTagProcessor(this, TemplateMode.HTML, dialectPrefix));
-        processors.add(new WithProcessor(this, TemplateMode.HTML, dialectPrefix));
+        processors.add(new StandardXmlNsTagProcessor(TemplateMode.HTML, dialectPrefix));
+        processors.add(new WithProcessor(TemplateMode.HTML, dialectPrefix));
         return processors;
     }
 
