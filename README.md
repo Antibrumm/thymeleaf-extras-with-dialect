@@ -10,7 +10,7 @@ Requirements
 ------------
 
  - Java 5
- - Thymeleaf 3.0.0+ (3.0.0.BETA01 and its dependencies included)
+ - Thymeleaf 3.0.0+ (3.0.0.BETA03 and its dependencies included)
 
 
 Installation
@@ -31,7 +31,7 @@ Add the With dialect to your existing Thymeleaf template engine, eg:
 
 ```java
 ServletContextTemplateResolver templateresolver = new ServletContextTemplateResolver();
-templateresolver.setTemplateMode("HTML5");
+templateresolver.setTemplateMode(TemplateMode.HTML);
 
 templateengine = new TemplateEngine();
 templateengine.setTemplateResolver(templateresolver);
@@ -51,7 +51,7 @@ Or, for those using Spring configuration files:
   <!-- These lines add the dialect to Thymeleaf -->
   <property name="additionalDialects">
     <set>
-      <beans:bean class="ch.mfrey.thymeleaf.extras.with.WithDialect" />
+      <bean class="ch.mfrey.thymeleaf.extras.with.WithDialect" />
     </set>
   </property>
 
@@ -98,4 +98,4 @@ Changelog
  - Working against Thymeleaf 2.1.0+
 
 ### 3.0.0-SNAPSHOT
- - Working againt Thymeleaf 3.0.0.BETA01
+ - Working against Thymeleaf 3.0.0.BETA03

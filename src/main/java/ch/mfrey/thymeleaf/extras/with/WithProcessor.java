@@ -1,16 +1,13 @@
 package ch.mfrey.thymeleaf.extras.with;
 
-import java.util.List;
-
 import org.attoparser.util.TextUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.thymeleaf.context.IEngineContext;
 import org.thymeleaf.context.ITemplateContext;
-import org.thymeleaf.dialect.IProcessorDialect;
 import org.thymeleaf.engine.AttributeName;
 import org.thymeleaf.exceptions.TemplateProcessingException;
-import org.thymeleaf.model.IElementAttributes;
+import org.thymeleaf.model.IAttribute;
 import org.thymeleaf.model.IProcessableElementTag;
 import org.thymeleaf.processor.AbstractProcessor;
 import org.thymeleaf.processor.element.IElementTagProcessor;
@@ -33,8 +30,8 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
     private final String dialectPrefix;
     private final MatchingAttributeName matchingAttributeName;
 
-    public WithProcessor(final IProcessorDialect dialect, final TemplateMode templateMode, final String dialectPrefix) {
-        super(dialect, templateMode, PRECEDENCE);
+    public WithProcessor(final TemplateMode templateMode, final String dialectPrefix) {
+        super(templateMode, PRECEDENCE);
         this.dialectPrefix = dialectPrefix;
         this.matchingAttributeName = MatchingAttributeName.forAllAttributesWithPrefix(getTemplateMode(), dialectPrefix);
     }
@@ -53,9 +50,7 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
             final IElementTagStructureHandler structureHandler) {
 
         final TemplateMode templateMode = context.getTemplateMode();
-        final IElementAttributes attributes = tag.getAttributes();
-        final List<AttributeName> attributeNames = attributes.getAllAttributeNames();
-        final List<String> completeNames = attributes.getAllCompleteNames();
+        final IAttribute[] attributes = tag.getAllAttributes();
 
         // Normally we would just allow the structure handler to be in charge of declaring the local variables
         // by using structureHandler.setLocalVariable(...) but in this case we want each variable defined at an
@@ -70,10 +65,10 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
             engineContext = null;
         }
 
-        for (int i = 0; i < attributeNames.size(); i++) {
+        for (IAttribute attribute : attributes) {
             // this matching works are these lists are correlated
-            final AttributeName attributeName = attributeNames.get(i);
-            final String completeName = completeNames.get(i);
+            final AttributeName attributeName = attribute.getDefinition().getAttributeName();
+            final String completeName = attribute.getCompleteName();
             /*
              * Compute the new attribute name (case sensitive). As the length of the matched attributename (in
              * lowercase) is the same as the variablename without the prefix we can just do a substring.
@@ -81,7 +76,7 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
             final String newVariableName = completeName.substring(completeName.length() - attributeName.getAttributeName().length());
 
             if (attributeName.isPrefixed() && TextUtil.equals(templateMode.isCaseSensitive(), attributeName.getPrefix(), this.dialectPrefix)) {
-                processWithAttribute(context, engineContext, tag, attributeName, newVariableName, structureHandler);
+                processWithAttribute(context, engineContext, tag, attribute, attributeName, newVariableName, structureHandler);
             }
 
         }
@@ -90,11 +85,11 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
 
     private void processWithAttribute(
             final ITemplateContext context, final IEngineContext engineContext,
-            final IProcessableElementTag tag, final AttributeName attributeName, final String newVariableName, IElementTagStructureHandler structureHandler) {
+            final IProcessableElementTag tag, final IAttribute attribute, final AttributeName attributeName, final String newVariableName, IElementTagStructureHandler structureHandler) {
         try {
 
             final String attributeValue = EscapedAttributeUtils.unescapeAttribute(
-                    context.getTemplateMode(), tag.getAttributes().getValue(attributeName));
+                    context.getTemplateMode(), attribute.getValue());
 
             /*
              * Obtain the parser
@@ -123,7 +118,7 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
                 structureHandler.setLocalVariable(newVariableName, expressionResult);
             }
 
-            tag.getAttributes().removeAttribute(attributeName);
+            structureHandler.removeAttribute(attributeName);
         } catch (final TemplateProcessingException e) {
             // This is a nice moment to check whether the execution raised an error and, if so, add location information
             // Note this is similar to what is done at the superclass AbstractElementTagProcessor, but we can be more
@@ -132,13 +127,13 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
                 e.setTemplateName(tag.getTemplateName());
             }
             if (!e.hasLineAndCol()) {
-                e.setLineAndCol(tag.getAttributes().getLine(attributeName), tag.getAttributes().getCol(attributeName));
+                e.setLineAndCol(attribute.getLine(), attribute.getCol());
             }
             throw e;
         } catch (final Exception e) {
             throw new TemplateProcessingException(
                     "Error during execution of processor '" + WithProcessor.class.getName() + "'",
-                    tag.getTemplateName(), tag.getAttributes().getLine(attributeName), tag.getAttributes().getCol(attributeName), e);
+                    tag.getTemplateName(), attribute.getLine(), attribute.getCol(), e);
         }
     }
 
