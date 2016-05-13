@@ -67,8 +67,8 @@ public class WithProcessor extends AbstractProcessor implements IElementTagProce
 
         for (IAttribute attribute : attributes) {
             // this matching works are these lists are correlated
-            final AttributeName attributeName = attribute.getDefinition().getAttributeName();
-            final String completeName = attribute.getCompleteName();
+            final AttributeName attributeName = attribute.getAttributeDefinition().getAttributeName();
+            final String completeName = attribute.getAttributeCompleteName();
             /*
              * Compute the new attribute name (case sensitive). As the length of the matched attributename (in
              * lowercase) is the same as the variablename without the prefix we can just do a substring.
