@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:with="http://www.thymeleaf.org/extras/with">
+<head></head>
+<body>
+	<div th:fragment="tree(a)">
+		<div th:text="${a.label}"></div>
+		<div th:if="${not a.children.empty}">
+			<div th:each="c : ${a.children}" th:remove="tag">
+				<div th:include="::tree(a=${c})"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

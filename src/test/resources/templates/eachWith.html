@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:with="http://www.thymeleaf.org/extras/with">
+<head></head>
+<body>
+
+	<div>
+		<div th:each="c : ${top.children}" th:with="a=${c}">
+			<div th:text="${a.label}"></div>
+		</div>
+	</div>
+
+</body>
+</html>
